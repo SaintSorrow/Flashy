@@ -35,11 +35,25 @@ export default class App extends Component {
   };
 
   correctCard = card => {
+    const newCorrectCards = this.state.correctCards.join(card);
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(this.state.currentCardIdx, 1);
 
+    this.setState({
+      correctCards: newCorrectCards,
+      currentCards: newCurrentCards
+    })
   }
 
   incorrectCard = card => {
+    const newIncorrectCards = this.state.correctCards.join(card)
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(this.state.currentCardIdx, 1);
 
+    this.setState({
+      incorrectCards: newIncorrectCards,
+      currentCards: newCurrentCards
+    })
   }
 
   handleBackButtonClick () {
