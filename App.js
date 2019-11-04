@@ -39,24 +39,26 @@ export default class App extends Component {
     return currentCard;
   }
 
+  getNextRandomIdx(array) {
+    let nextIdx = 0
+
+    if (array.length !== 1) {
+       nextIdx = Math.floor(Math.random() * array.length)
+    }
+    
+    return nextIdx;
+  }
+
   correctCardHandler = () => {
-    console.log("currentIdx: " + this.state.currentCardIdx)
-  
     const card = this.getCurrentCard();
-
-    console.log(card.back)
-    console.log(card.front)
-    console.log(card)
-    console.log(this.state.correctCards)
-
-    const correctCards = [...this.state.correctCards, card]
+    const newCorrectCards = [...this.state.correctCards, card]
     let newCurrentCards = [...this.state.currentCards];
     newCurrentCards.splice(this.state.currentCardIdx, 1);
 
-    const nextIdx = Math.floor(Math.random() * newCurrentCards.length);
+    const nextIdx = this.getNextRandomIdx(newCurrentCards);
 
     this.setState({
-      correctCards: correctCards,
+      correctCards: newCorrectCards,
       currentCards: newCurrentCards,
       currentCardIdx: nextIdx,
     })
@@ -64,13 +66,41 @@ export default class App extends Component {
 
   incorrectCardHandler = () => {
     const card = this.getCurrentCard();
-    const newIncorrectCards = this.state.correctCards.join(card);
+    const newIncorrectCards = [...this.state.incorrectCards, card];
     let newCurrentCards = [...this.state.currentCards];
     newCurrentCards.splice(this.state.currentCardIdx, 1)
 
+    const nextIdx = this.getNextRandomIdx(newCurrentCards);
+
     this.setState({
       incorrectCards: newIncorrectCards,
-      currentCards: newCurrentCards
+      currentCards: newCurrentCards,
+      currentCardIdx: nextIdx,
+    })
+  }
+
+  deleteCardHandler = () => {
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(this.state.currentCardIdx, 1);
+
+    const nextIdx = this.getNextRandomIdx(newCurrentCards);
+
+    this.setState({
+      currentCards: newCurrentCards,
+      currentCardIdx: nextIdx,
+    })
+  }
+
+  resetCurrentDeckHandler = () => {
+    const newCurrentCards = [...this.state.incorrectCards, ...this.state.correctCards];
+
+    const nextIdx = this.getNextRandomIdx(newCurrentCards);
+
+    this.setState({
+      currentCards: newCurrentCards,
+      incorrectCards: [],
+      correctCards: [],
+      currentCardIdx: nextIdx,
     })
   }
 
@@ -103,6 +133,8 @@ export default class App extends Component {
             flipCard={this.flipCard}
             correctCardHandler={this.correctCardHandler}
             incorrectCardHandler={this.incorrectCardHandler}
+            resetCurrentDeckHandler={this.resetCurrentDeckHandler}
+            deleteCardHandler={this.deleteCardHandler}
           />
         )}
       </View>

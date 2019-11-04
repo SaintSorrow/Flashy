@@ -2,19 +2,31 @@ import React, { Component } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
 
 export default class Card extends Component {
+
+  getCardText() {
+    let cardText = ""
+
+    if (this.props.cards.length === 0) {
+      cardText = "No cards left in the deck!";
+    } else if (this.props.showCardBack === true) {
+      cardText = this.props.cards[this.props.idx].back;
+    } else {
+      cardText = this.props.cards[this.props.idx].front;
+    }
+
+    return cardText;
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <TouchableOpacity style={styles.card} onPress={() => this.props.flipCard()}>
-          {this.props.showCardBack === true && (
-            <Text style={styles.cardText}>{this.props.cards[this.props.idx].back}</Text>
-          )}
-          {this.props.showCardBack === false && (
-            <Text style={styles.cardText}>{this.props.cards[this.props.idx].front}</Text>
-          )}
+          <Text style={styles.cardText}>{this.getCardText()}</Text>
         </TouchableOpacity>
         <Buttons correctCard={() => this.props.correctCardHandler()}
           incorrectCard={() => this.props.incorrectCardHandler()}
+          resetDeck={() => this.props.resetCurrentDeckHandler()}
+          deleteCard={() => this.props.deleteCardHandler()}
         />
       </View>
     )
@@ -25,7 +37,8 @@ const Buttons = props => (
   <View style={styles.buttons}>
     <Button title="correct" onPress={() => props.correctCard()}/>
     <Button title="wrong" onPress={() => props.incorrectCard()}/>
-    <Button title="delete"/>
+    <Button title="delete" onPress={() => props.deleteCard()}/>
+    <Button title="reset" onPress={() => props.resetDeck()}/>
   </View>
 )
 
