@@ -39,8 +39,6 @@ export default class Card extends Component {
   }
 
   flipCard() {
-    this.props.flipCard();
-    
     if (this.value >= 90) {
       Animated.spring(this.animatedValue, {
         toValue: 0,
@@ -56,6 +54,11 @@ export default class Card extends Component {
     }
   }
 
+  flipCardPress() {
+    this.props.flipCard();
+    this.flipCard();
+  }
+
   getCardText() {
     let cardText = ""
 
@@ -68,6 +71,38 @@ export default class Card extends Component {
     }
 
     return cardText;
+  }
+
+  correctCard() {
+    if (this.props.showCardBack === true) {
+      this.flipCardPress();
+    }
+
+    this.props.correctCardHandler();
+  }
+
+  incorrectCard() {
+    if (this.props.showCardBack === true) {
+      this.flipCardPress();
+    }
+
+    this.props.incorrectCardHandler();
+  }
+
+  resetCurrentDeck() {
+    if (this.props.showCardBack === true) {
+      this.flipCardPress();
+    }
+
+    this.props.resetCurrentDeckHandler();
+  }
+
+  deleteCard() {
+    if (this.props.showCardBack === true) {
+      this.flipCardPress();
+    }
+
+    this.props.deleteCardHandler();
   }
 
   render() {
@@ -85,7 +120,7 @@ export default class Card extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.flipCard()}>
+        <TouchableOpacity onPress={() => this.flipCardPress()}>
           <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
             <Text style={styles.cardText}>{this.getCardText()}</Text>
           </Animated.View>
@@ -93,10 +128,10 @@ export default class Card extends Component {
             <Text style={styles.cardText}>{this.getCardText()}</Text>
           </Animated.View>
         </TouchableOpacity>
-        <Buttons correctCard={() => this.props.correctCardHandler()}
-          incorrectCard={() => this.props.incorrectCardHandler()}
-          resetDeck={() => this.props.resetCurrentDeckHandler()}
-          deleteCard={() => this.props.deleteCardHandler()}
+        <Buttons correctCard={() => this.correctCard()}
+          incorrectCard={() => this.incorrectCard()}
+          resetDeck={() => this.resetCurrentDeck()}
+          deleteCard={() => this.deleteCard()}
         />
       </View>
     )
