@@ -34,21 +34,39 @@ export default class App extends Component {
     });
   };
 
-  correctCard = card => {
-    const newCorrectCards = this.state.correctCards.join(card);
+  getCurrentCard() {
+    const currentCard = this.state.currentCards[this.state.currentCardIdx];
+    return currentCard;
+  }
+
+  correctCardHandler = () => {
+    console.log("currentIdx: " + this.state.currentCardIdx)
+  
+    const card = this.getCurrentCard();
+
+    console.log(card.back)
+    console.log(card.front)
+    console.log(card)
+    console.log(this.state.correctCards)
+
+    const correctCards = [...this.state.correctCards, card]
     let newCurrentCards = [...this.state.currentCards];
     newCurrentCards.splice(this.state.currentCardIdx, 1);
 
+    const nextIdx = Math.floor(Math.random() * newCurrentCards.length);
+
     this.setState({
-      correctCards: newCorrectCards,
-      currentCards: newCurrentCards
+      correctCards: correctCards,
+      currentCards: newCurrentCards,
+      currentCardIdx: nextIdx,
     })
   }
 
-  incorrectCard = card => {
-    const newIncorrectCards = this.state.correctCards.join(card)
+  incorrectCardHandler = () => {
+    const card = this.getCurrentCard();
+    const newIncorrectCards = this.state.correctCards.join(card);
     let newCurrentCards = [...this.state.currentCards];
-    newCurrentCards.splice(this.state.currentCardIdx, 1);
+    newCurrentCards.splice(this.state.currentCardIdx, 1)
 
     this.setState({
       incorrectCards: newIncorrectCards,
@@ -83,6 +101,8 @@ export default class App extends Component {
             idx={this.state.currentCardIdx}
             showCardBack={this.state.showCardBack}
             flipCard={this.flipCard}
+            correctCardHandler={this.correctCardHandler}
+            incorrectCardHandler={this.incorrectCardHandler}
           />
         )}
       </View>
