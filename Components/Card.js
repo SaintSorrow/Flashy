@@ -1,7 +1,60 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native'
+import { 
+  StyleSheet, 
+  Text, 
+  View, 
+  TouchableOpacity, 
+  Button, 
+  Animated 
+} from 'react-native'
 
 export default class Card extends Component {
+
+  componentWillMount() {
+    this.animatedValue = new Animated.Value(0);
+    this.value = 0;
+    this.animatedValue.addListener(({ value }) => {
+      this.value = value;
+    })
+
+    this.frontInterpolate = this.animatedValue.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['0deg', '180deg'],
+    })
+
+    this.backInterpolate = this.animatedValue.interpolate({
+      inputRange: [0, 180],
+      outputRange: ['180deg', '360deg'],
+    })
+
+    this.frontOpacity = this.animatedValue.interpolate({
+      inputRange: [89, 90],
+      outputRange: [1, 0],
+    })
+
+    this.backOpacity = this.animatedValue.interpolate({
+      inputRange: [89, 90],
+      outputRange: [0, 1],
+    })
+  }
+
+  flipCard() {
+    this.props.flipCard();
+    
+    if (this.value >= 90) {
+      Animated.spring(this.animatedValue, {
+        toValue: 0,
+        friction: 8,
+        tension: 10
+      }).start();
+    } else {
+      Animated.spring(this.animatedValue, {
+        toValue: 180,
+        friction: 8,
+        tension: 10,
+      }).start();
+    }
+  }
 
   getCardText() {
     let cardText = ""
@@ -9,19 +62,36 @@ export default class Card extends Component {
     if (this.props.cards.length === 0) {
       cardText = "No cards left in the deck!";
     } else if (this.props.showCardBack === true) {
-      cardText = this.props.cards[this.props.idx].back;
+      cardText = this.props.cards[0].back;
     } else {
-      cardText = this.props.cards[this.props.idx].front;
+      cardText = this.props.cards[0].front;
     }
 
     return cardText;
   }
 
   render() {
+    const frontAnimatedStyle = {
+      transform: [
+        { rotateY: this.frontInterpolate }
+      ]
+    }
+
+    const backAnimatedStyle = {
+      transform: [
+        { rotateY: this.backInterpolate }
+      ]
+    }
+
     return (
       <View style={styles.container}>
-        <TouchableOpacity style={styles.card} onPress={() => this.props.flipCard()}>
-          <Text style={styles.cardText}>{this.getCardText()}</Text>
+        <TouchableOpacity onPress={() => this.flipCard()}>
+          <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
+            <Text style={styles.cardText}>{this.getCardText()}</Text>
+          </Animated.View>
+          <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
+            <Text style={styles.cardText}>{this.getCardText()}</Text>
+          </Animated.View>
         </TouchableOpacity>
         <Buttons correctCard={() => this.props.correctCardHandler()}
           incorrectCard={() => this.props.incorrectCardHandler()}
@@ -49,12 +119,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     flexDirection: 'row'
   },
-  card: {
-    backgroundColor: '#02a184',
+  flipCard: {
+    backgroundColor: 'blue',
     height: 360,
     width: 240,
     textAlignVertical: 'center',
     textAlign: 'center',
+    backfaceVisibility: 'hidden'
+  },
+  flipCardBack: {
+    backgroundColor: 'red',
+    position: 'absolute',
+    height: 360,
+    width: 240,
+    top: 0,
   },
   cardText: {
     textAlign: 'center',
