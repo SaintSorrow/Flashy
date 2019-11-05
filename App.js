@@ -3,6 +3,7 @@ import { StyleSheet, View, BackHandler, Button } from 'react-native'
 import decks from './flashcards'
 import DeckList from './Components/DeckList'
 import Card from './Components/Card'
+import AddDeck from './Components/AddDeck'
 
 function shuffleDeck(array) {
  let m = array.length, i, t;
@@ -29,6 +30,7 @@ export default class App extends Component {
       currentCards: [],
       decks: decks,
       showCardBack: false,
+      showDecks: true
     }
   }
 
@@ -110,15 +112,26 @@ export default class App extends Component {
     })
   }
 
-  addDeck() {
+  toggleDecks = () => {
+    this.setState(prev => ({showDecks: !prev.showDecks}))
+  }
 
+  addDeck = newDeck => {
+    this.setState(prev => ({decks: [...prev.decks, newDeck], showDecks: true}))
   }
 
   render() {
     return (
       <View style ={styles.container}>
-        {this.state.showCards === false && (
-          <DeckList showCardsHandler={this.showCardsHandler} decks={this.state.decks}/>
+        {this.state.showCards === false && this.state.showDecks === true && (
+          <View>
+            <DeckList showCardsHandler={this.showCardsHandler} decks={this.state.decks}/>
+            <Button title='Add deck' onPress={this.toggleDecks}/>
+          </View>
+        )}
+        {
+          this.state.showCards === false && this.state.showDecks === false && (
+            <AddDeck onSubmit={this.addDeck}/>
         )}
         {this.state.showCards === true && (
           <Card cards={this.state.currentCards}

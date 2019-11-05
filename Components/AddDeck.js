@@ -5,7 +5,8 @@ export default class AddDeck extends Component {
 
   state = {
     name: '',
-    isValid: false
+    isValid: false,
+    cards: []
   }
 
   handleNameChange = name => {
@@ -18,7 +19,7 @@ export default class AddDeck extends Component {
   }
 
   handleSubmit = () => {
-    this.props.onSubmit({name: this.state.name})
+    this.props.onSubmit({name: this.state.name, cards: []})
   }
 
   render () {
