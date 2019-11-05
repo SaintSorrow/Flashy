@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, BackHandler } from 'react-native'
+import { StyleSheet, View, BackHandler, Button } from 'react-native'
 import decks from './flashcards'
 import DeckList from './Components/DeckList'
 import Card from './Components/Card'
@@ -108,6 +108,10 @@ export default class App extends Component {
     this.setState({
       showCardBack: !this.state.showCardBack
     })
+  }
+
+  addDeck() {
+
   }
 
   render() {
