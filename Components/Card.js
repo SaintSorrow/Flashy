@@ -7,6 +7,7 @@ import {
   Button, 
   Animated 
 } from 'react-native'
+import AddCard from './AddCard'
 
 export default class Card extends Component {
   constructor(props) {
@@ -15,7 +16,8 @@ export default class Card extends Component {
       showCardBack: false,
       incorrectCards: [],
       correctCards: [],
-      currentCards: props.cards
+      currentCards: props.cards,
+      showCards: true
     }
   }
   
@@ -143,6 +145,14 @@ export default class Card extends Component {
     })
   }
 
+  addCard = newCard => {
+    this.setState(prev => ({currentCards: [newCard, ...prev.currentCards]}))
+  }
+
+  toggleCards = () => {
+    this.setState(prev => ({showCards: !prev.showCards}));
+  }
+
   render() {
     const frontAnimatedStyle = {
       transform: [
@@ -158,19 +168,28 @@ export default class Card extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.flipCard()}>
-          <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
-            <Text style={styles.cardText}>{this.getCardText()}</Text>
-          </Animated.View>
-          <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
-            <Text style={styles.cardText}>{this.getCardText()}</Text>
-          </Animated.View>
-        </TouchableOpacity>
-        <Buttons correctCard={() => this.correctCard()}
-          incorrectCard={() => this.incorrectCard()}
-          resetDeck={() => this.resetCurrentDeck()}
-          deleteCard={() => this.deleteCard()}
-        />
+        {this.state.showCards === true && (
+          <View>
+            <TouchableOpacity onPress={() => this.flipCard()}>
+            <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
+              <Text style={styles.cardText}>{this.getCardText()}</Text>
+            </Animated.View>
+            <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
+              <Text style={styles.cardText}>{this.getCardText()}</Text>
+            </Animated.View>
+          </TouchableOpacity>
+          <Buttons correctCard={() => this.correctCard()}
+            incorrectCard={() => this.incorrectCard()}
+            resetDeck={() => this.resetCurrentDeck()}
+            deleteCard={() => this.deleteCard()}
+            toggleCards={() => this.toggleCards()}/>
+        </View>
+        )}
+        {this.state.showCards === false && (
+          <View>
+            <AddCard onSubmit={this.addCard}/>
+          </View>
+        )}
       </View>
     )
   }
@@ -182,7 +201,7 @@ const Buttons = props => (
     <Button title="wrong" onPress={() => props.incorrectCard()}/>
     <Button title="delete" onPress={() => props.deleteCard()}/>
     <Button title="reset" onPress={() => props.resetDeck()}/>
-    <Button title="new card"/>
+    <Button title="new card" onPress={() => props.toggleCards()}/>
   </View>
 )
 

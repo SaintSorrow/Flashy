@@ -28,25 +28,28 @@ export default class AddCard extends Component {
   }
 
   render() {
-    <View>
-      <TextInput
-        style={styles.input}
-        placeholder='Question'
-        value={this.state.front}
-        onChangeText={this.handleFrontChange}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder='Answer'
-        value={this.state.back}
-        onChangeText={this.handleBackChange}
-      />
-      <Button
-        title='Add card'
-        onPress={this.handleSubmit}
-        disabled={!this.state.isValid}
-      />
-    </View>
+    return(
+      <View>
+        <TextInput
+          style={styles.input}
+          placeholder='Question'
+          value={this.state.front}
+          onChangeText={this.handleFrontChange}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder='Answer'
+          value={this.state.back}
+          onChangeText={this.handleBackChange}
+        />
+        <Button
+          title='Add card'
+          onPress={this.handleSubmit}
+          disabled={!this.state.isValid}
+        />
+      </View>
+    )
+
   }
 }
 

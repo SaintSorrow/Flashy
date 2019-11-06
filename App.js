@@ -1,5 +1,10 @@
 import React, { Component } from 'react'
-import { StyleSheet, View, BackHandler, Button } from 'react-native'
+import { 
+  StyleSheet, 
+  View, 
+  BackHandler, 
+  Button 
+} from 'react-native'
 import decks from './flashcards'
 import DeckList from './Components/DeckList'
 import Card from './Components/Card'
@@ -27,6 +32,7 @@ export default class App extends Component {
       showCards: false,
       decks: decks,
       currentDeck: '',
+      currentDeckIdx: -1,
       showDecks: true
     }
   }
@@ -40,11 +46,14 @@ export default class App extends Component {
   }
 
   showCardsHandler = deck => {
+    const decks = this.state.decks;
+    const currentDeckIdx = decks.indexOf(deck);
     shuffleDeck(deck.cards)
 
     this.setState({
       showCards: !this.state.showCards,
       currentDeck: deck,
+      currentDeckIdx: currentDeckIdx
     });
   };
 
@@ -54,11 +63,18 @@ export default class App extends Component {
         showCards: !this.state.showCards,
       })
     }
+
+    if (this.state.showDecks === false) {
+      this.setState({
+        showDecks: !this.state.showDecks
+      })
+    }
+
     return true;
   }
 
   toggleDecks = () => {
-    this.setState(prev => ({showDecks: !prev.showDecks}))
+    this.setState(prev => ({showDecks: !prev.showDecks}));
   }
 
   addDeck = newDeck => {
