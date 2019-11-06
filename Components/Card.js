@@ -9,6 +9,13 @@ import {
 } from 'react-native'
 
 export default class Card extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showCardBack: false
+    }
+  }
+  
 
   componentWillMount() {
     this.animatedValue = new Animated.Value(0);
@@ -52,11 +59,10 @@ export default class Card extends Component {
         tension: 10,
       }).start();
     }
-  }
 
-  flipCardPress() {
-    this.props.flipCard();
-    this.flipCard();
+    this.setState({
+      showCardBack: !this.state.showCardBack
+    })
   }
 
   getCardText() {
@@ -64,7 +70,7 @@ export default class Card extends Component {
 
     if (this.props.cards.length === 0) {
       cardText = "No cards left in the deck!";
-    } else if (this.props.showCardBack === true) {
+    } else if (this.state.showCardBack === true) {
       cardText = this.props.cards[0].back;
     } else {
       cardText = this.props.cards[0].front;
@@ -74,24 +80,24 @@ export default class Card extends Component {
   }
 
   correctCard() {
-    if (this.props.showCardBack === true) {
-      this.flipCardPress();
+    if (this.state.showCardBack === true) {
+      this.flipCard();
     }
 
     this.props.correctCardHandler();
   }
 
   incorrectCard() {
-    if (this.props.showCardBack === true) {
-      this.flipCardPress();
+    if (this.state.showCardBack === true) {
+      this.flipCard();
     }
 
     this.props.incorrectCardHandler();
   }
 
   resetCurrentDeck() {
-    if (this.props.showCardBack === true) {
-      this.flipCardPress();
+    if (this.state.showCardBack === true) {
+      this.flipCard();
     }
 
     this.props.resetCurrentDeckHandler();
@@ -99,7 +105,7 @@ export default class Card extends Component {
 
   deleteCard() {
     if (this.props.showCardBack === true) {
-      this.flipCardPress();
+      this.flipCard();
     }
 
     this.props.deleteCardHandler();
@@ -120,7 +126,7 @@ export default class Card extends Component {
 
     return (
       <View style={styles.container}>
-        <TouchableOpacity onPress={() => this.flipCardPress()}>
+        <TouchableOpacity onPress={() => this.flipCard()}>
           <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
             <Text style={styles.cardText}>{this.getCardText()}</Text>
           </Animated.View>

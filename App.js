@@ -29,7 +29,6 @@ export default class App extends Component {
       correctCards: [],
       currentCards: [],
       decks: decks,
-      showCardBack: false,
       showDecks: true
     }
   }
@@ -57,8 +56,7 @@ export default class App extends Component {
 
     this.setState({
       correctCards: newCorrectCards,
-      currentCards: newCurrentCards,
-      showCardBack: false,
+      currentCards: newCurrentCards
     })
   }
 
@@ -70,8 +68,7 @@ export default class App extends Component {
 
     this.setState({
       incorrectCards: newIncorrectCards,
-      currentCards: newCurrentCards,
-      showCardBack: false,
+      currentCards: newCurrentCards
     })
   }
 
@@ -80,8 +77,7 @@ export default class App extends Component {
     newCurrentCards.splice(0, 1);
 
     this.setState({
-      currentCards: newCurrentCards,
-      showCardBack: false,
+      currentCards: newCurrentCards
     })
   }
 
@@ -91,8 +87,7 @@ export default class App extends Component {
     this.setState({
       currentCards: newCurrentCards,
       incorrectCards: [],
-      correctCards: [],
-      showCardBack: false,
+      correctCards: []
     })
   }
 
@@ -100,16 +95,9 @@ export default class App extends Component {
     if (this.state.showCards) {
       this.setState({
         showCards: !this.state.showCards,
-        showCardBack: false,
       })
     }
     return true;
-  }
-
-  flipCard = () => {
-    this.setState({
-      showCardBack: !this.state.showCardBack
-    })
   }
 
   toggleDecks = () => {
@@ -134,8 +122,6 @@ export default class App extends Component {
         )}
         {this.state.showCards === true && (
           <Card cards={this.state.currentCards}
-            showCardBack={this.state.showCardBack}
-            flipCard={this.flipCard}
             correctCardHandler={this.correctCardHandler}
             incorrectCardHandler={this.incorrectCardHandler}
             resetCurrentDeckHandler={this.resetCurrentDeckHandler}
