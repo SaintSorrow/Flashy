@@ -12,7 +12,10 @@ export default class Card extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showCardBack: false
+      showCardBack: false,
+      incorrectCards: [],
+      correctCards: [],
+      currentCards: props.cards
     }
   }
   
@@ -71,9 +74,9 @@ export default class Card extends Component {
     if (this.props.cards.length === 0) {
       cardText = "No cards left in the deck!";
     } else if (this.state.showCardBack === true) {
-      cardText = this.props.cards[0].back;
+      cardText = this.state.currentCards[0].back;
     } else {
-      cardText = this.props.cards[0].front;
+      cardText = this.state.currentCards[0].front;
     }
 
     return cardText;
@@ -84,7 +87,15 @@ export default class Card extends Component {
       this.flipCard();
     }
 
-    this.props.correctCardHandler();
+    const card = this.state.currentCards[0];
+    const newCorrectCards = [...this.state.correctCards, card];
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(0, 1);
+
+    this.setState({
+      correctCards: newCorrectCards,
+      currentCards: newCurrentCards
+    })
   }
 
   incorrectCard() {
@@ -92,7 +103,15 @@ export default class Card extends Component {
       this.flipCard();
     }
 
-    this.props.incorrectCardHandler();
+    const card = this.state.currentCards[0];
+    const newIncorrectCards = [...this.state.incorrectCards, card];
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(0, 1);
+
+    this.setState({
+      incorrectCards: newIncorrectCards,
+      currentCards: newCurrentCards
+    })
   }
 
   resetCurrentDeck() {
@@ -100,15 +119,28 @@ export default class Card extends Component {
       this.flipCard();
     }
 
-    this.props.resetCurrentDeckHandler();
+    const newCurrentCards = [...this.state.incorrectCards, 
+      ...this.state.currentCards,
+      ...this.state.correctCards];
+
+      this.setState({
+        currentCards: newCurrentCards,
+        incorrectCards: [],
+        correctCards: []
+      })
   }
 
   deleteCard() {
-    if (this.props.showCardBack === true) {
+    if (this.state.showCardBack === true) {
       this.flipCard();
     }
 
-    this.props.deleteCardHandler();
+    let newCurrentCards = [...this.state.currentCards];
+    newCurrentCards.splice(0, 1);
+
+    this.setState({
+      currentCards: newCurrentCards
+    })
   }
 
   render() {

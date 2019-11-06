@@ -25,10 +25,8 @@ export default class App extends Component {
     this.handleBackButtonClick = this.handleBackButtonClick.bind(this);
     this.state = {
       showCards: false,
-      incorrectCards: [],
-      correctCards: [],
-      currentCards: [],
       decks: decks,
+      currentDeck: '',
       showDecks: true
     }
   }
@@ -42,54 +40,13 @@ export default class App extends Component {
   }
 
   showCardsHandler = deck => {
+    shuffleDeck(deck.cards)
+
     this.setState({
       showCards: !this.state.showCards,
-      currentCards: shuffleDeck(deck.cards),
+      currentDeck: deck,
     });
   };
-
-  correctCardHandler = () => {
-    const card = this.state.currentCards[0]
-    const newCorrectCards = [...this.state.correctCards, card]
-    let newCurrentCards = [...this.state.currentCards];
-    newCurrentCards.splice(0, 1);
-
-    this.setState({
-      correctCards: newCorrectCards,
-      currentCards: newCurrentCards
-    })
-  }
-
-  incorrectCardHandler = () => {
-    const card = this.state.currentCards[0];
-    const newIncorrectCards = [...this.state.incorrectCards, card];
-    let newCurrentCards = [...this.state.currentCards];
-    newCurrentCards.splice(0, 1)
-
-    this.setState({
-      incorrectCards: newIncorrectCards,
-      currentCards: newCurrentCards
-    })
-  }
-
-  deleteCardHandler = () => {
-    let newCurrentCards = [...this.state.currentCards];
-    newCurrentCards.splice(0, 1);
-
-    this.setState({
-      currentCards: newCurrentCards
-    })
-  }
-
-  resetCurrentDeckHandler = () => {
-    const newCurrentCards = [...this.state.incorrectCards, ...this.state.currentCards, ...this.state.correctCards];
-
-    this.setState({
-      currentCards: newCurrentCards,
-      incorrectCards: [],
-      correctCards: []
-    })
-  }
 
   handleBackButtonClick () {
     if (this.state.showCards) {
@@ -121,12 +78,7 @@ export default class App extends Component {
           <AddDeck onSubmit={this.addDeck}/>
         )}
         {this.state.showCards === true && (
-          <Card cards={this.state.currentCards}
-            correctCardHandler={this.correctCardHandler}
-            incorrectCardHandler={this.incorrectCardHandler}
-            resetCurrentDeckHandler={this.resetCurrentDeckHandler}
-            deleteCardHandler={this.deleteCardHandler}
-          />
+          <Card cards={this.state.currentDeck.cards}/>
         )}
       </View>
     );
