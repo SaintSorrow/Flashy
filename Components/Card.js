@@ -144,6 +144,7 @@ const Buttons = props => (
     <Button title="wrong" onPress={() => props.incorrectCard()}/>
     <Button title="delete" onPress={() => props.deleteCard()}/>
     <Button title="reset" onPress={() => props.resetDeck()}/>
+    <Button title="new card"/>
   </View>
 )
 

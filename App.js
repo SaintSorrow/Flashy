@@ -129,9 +129,8 @@ export default class App extends Component {
             <Button title='Add deck' onPress={this.toggleDecks}/>
           </View>
         )}
-        {
-          this.state.showCards === false && this.state.showDecks === false && (
-            <AddDeck onSubmit={this.addDeck}/>
+        {this.state.showCards === false && this.state.showDecks === false && (
+          <AddDeck onSubmit={this.addDeck}/>
         )}
         {this.state.showCards === true && (
           <Card cards={this.state.currentCards}

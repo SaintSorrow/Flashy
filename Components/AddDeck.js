@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, TextInput} from 'react-native';
+import { StyleSheet, View, Button, Text, TextInput} from 'react-native';
 
 export default class AddDeck extends Component {
 
@@ -25,7 +25,10 @@ export default class AddDeck extends Component {
   render () {
     return(
       <View>
+        <Text>Deck name:</Text>
         <TextInput
+          maxLength={30}
+          placeholder='Deck name'
           style={styles.input}
           value={this.state.name}
           onChangeText={this.handleNameChange}
