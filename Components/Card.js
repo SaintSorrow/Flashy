@@ -157,7 +157,23 @@ export default class Card extends Component {
   }
 
   onActionSelected = position => {
-
+    switch (position) {
+      case 0:
+        this.correctCard();
+        break;
+      case 1:
+        this.incorrectCard();
+        break;
+      case 2:
+        this.deleteCard();
+        break;
+      case 3:
+        this.resetCurrentDeck();
+        break;
+      case 4:
+        this.toggleCards();
+        break;
+    }
   }
 
   render() {
@@ -234,39 +250,38 @@ const toolBarActions = [
   }
 ]
 
-const Buttons = props => (
-  <View style={styles.buttons}>
-    <Button title="correct" onPress={() => props.correctCard()}/>
-    <Button title="wrong" onPress={() => props.incorrectCard()}/>
-    <Button title="delete" onPress={() => props.deleteCard()}/>
-    <Button title="reset" onPress={() => props.resetDeck()}/>
-    <Button title="new card" onPress={() => props.toggleCards()}/>
-  </View>
-)
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%'
   },
   flipCard: {
-    backgroundColor: 'blue',
-    height: 400,
-    width: 260,
+    backgroundColor: '#1d951f',
+    height: 460,
+    width: 290,
     textAlignVertical: 'center',
     textAlign: 'center',
-    backfaceVisibility: 'hidden'
+    backfaceVisibility: 'hidden',
+    justifyContent: 'center',
+    borderRadius: 50,
+    borderWidth: 3
   },
   flipCardBack: {
-    backgroundColor: 'red',
+    justifyContent: 'center',
+    backgroundColor: '#e0765c',
     position: 'absolute',
-    height: 400,
-    width: 260,
+    height: 460,
+    width: 290,
     top: 0,
+    borderRadius: 50,
+    borderWidth: 3
   },
   cardText: {
     textAlign: 'center',
     textAlignVertical: 'center',
+    fontFamily: 'monospace',
+    color: 'white',
+    fontSize: 16
   },
   buttons: {
     flex: 1
@@ -287,6 +302,6 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     alignItems: 'center', 
-    top: 100
+    top: 75
   }
 })

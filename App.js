@@ -132,7 +132,7 @@ const toolBarActions = [
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#004e92',
+    backgroundColor: '#719cf2',
     alignItems: 'center',
     justifyContent: 'center',
     width: '100%',
