@@ -3,7 +3,6 @@ import {
   StyleSheet, 
   View, 
   BackHandler, 
-  Button ,
   ToolbarAndroid,
   StatusBar
 } from 'react-native';
@@ -11,7 +10,6 @@ import decks from './flashcards';
 import DeckList from './Components/DeckList';
 import Card from './Components/Card';
 import AddDeck from './Components/AddDeck';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 function shuffleDeck(array) {
  let m = array.length, i, t;
@@ -75,10 +73,6 @@ export default class App extends Component {
 
     return true;
   }
-
-  /*toggleDecks = () => {
-    this.setState(prev => ({showDecks: !prev.showDecks}));
-  }*/
 
   toggleDecks() {
     this.setState(prev => ({showDecks: !prev.showDecks}));
