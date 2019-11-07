@@ -5,9 +5,12 @@ import {
   View, 
   TouchableOpacity, 
   Button, 
-  Animated 
+  Animated,
+  TouchableHighlight 
 } from 'react-native'
 import AddCard from './AddCard'
+import ActionButton from 'react-native-action-button';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Card extends Component {
   constructor(props) {
@@ -168,32 +171,74 @@ export default class Card extends Component {
 
     return (
       <View style={styles.container}>
-        {this.state.showCards === true && (
-          <View>
+        {this.state.showCards ?
+          <View style={{position: 'relative'}}>
             <TouchableOpacity onPress={() => this.flipCard()}>
-            <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
-              <Text style={styles.cardText}>{this.getCardText()}</Text>
-            </Animated.View>
-            <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
-              <Text style={styles.cardText}>{this.getCardText()}</Text>
-            </Animated.View>
-          </TouchableOpacity>
-          <Buttons correctCard={() => this.correctCard()}
-            incorrectCard={() => this.incorrectCard()}
-            resetDeck={() => this.resetCurrentDeck()}
-            deleteCard={() => this.deleteCard()}
-            toggleCards={() => this.toggleCards()}/>
-        </View>
+              <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
+                <Text style={styles.cardText}>{this.getCardText()}</Text>
+              </Animated.View>
+              <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
+                <Text style={styles.cardText}>{this.getCardText()}</Text>
+              </Animated.View>
+            </TouchableOpacity>
+            <View>
+              <TouchableHighlight style={styles.addButton}
+                  underlayColor='#ff7043' onPress={()=>{console.log('pressed')}}>
+                  <Text style={{fontSize: 50, color: 'white'}}>+</Text>
+              </TouchableHighlight>
+            </View>            
+          </View> : 
+          <View>
+            <AddCard onSubmit={this.addCard}/>
+          </View>
+        }
+      </View>
+    )
+  }
+}
+
+        /*{this.state.showCards === true && (
+          <View>
+            <View style={{flex: 1}}>
+              <TouchableOpacity onPress={() => this.flipCard()}>
+                <Animated.View style={[styles.flipCard, frontAnimatedStyle, {opacity: this.frontOpacity}]}>
+                  <Text style={styles.cardText}>{this.getCardText()}</Text>
+                </Animated.View>
+                <Animated.View style={[styles.flipCardBack, backAnimatedStyle, {opacity: this.backOpacity}]}>
+                  <Text style={styles.cardText}>{this.getCardText()}</Text>
+                </Animated.View>
+              </TouchableOpacity>
+              <ActionButtons/>
+            </View>
+          </View>
         )}
         {this.state.showCards === false && (
           <View>
             <AddCard onSubmit={this.addCard}/>
           </View>
-        )}
-      </View>
-    )
-  }
-}
+        )}*/
+
+          /*<Buttons correctCard={() => this.correctCard()}
+            incorrectCard={() => this.incorrectCard()}
+            resetDeck={() => this.resetCurrentDeck()}
+            deleteCard={() => this.deleteCard()}
+            toggleCards={() => this.toggleCards()}/>*/
+
+const ActionButtons = props => (
+  <View style={styles.actionButtons}>
+    <ActionButton buttonColor="rgba(231,76,60,1)">
+      <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+        <Icon name="md-create" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+      <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
+        <Icon name="md-notifications-off" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+      <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+        <Icon name="md-done-all" style={styles.actionButtonIcon} />
+      </ActionButton.Item>
+    </ActionButton>
+  </View>
+)
 
 const Buttons = props => (
   <View style={styles.buttons}>
@@ -210,7 +255,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row'
+    flexDirection: 'row',
+    width: '100%',
+    height: '100%'
   },
   flipCard: {
     backgroundColor: 'blue',
@@ -233,5 +280,33 @@ const styles = StyleSheet.create({
   },
   buttons: {
     flex: 1
+  },
+  actionButtons: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    right: 0,
+    alignItems: 'center'
+  },
+  addButton: {
+    backgroundColor: '#ff5722',
+    borderColor: '#ff5722',
+    borderWidth: 1,
+    height: 50,
+    width: 50,
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 50,
+    left: 20,
+    shadowColor: "#000000",
+    shadowOpacity: 0.8,
+    shadowRadius: 2,
+    shadowOffset: {
+      height: 1,
+      width: 0
+    },
+    zIndex: 10
   }
 })
