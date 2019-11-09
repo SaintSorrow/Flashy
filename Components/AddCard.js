@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Button, TextInput} from 'react-native';
+import { 
+  StyleSheet, 
+  View, 
+  Button, 
+  TextInput,
+  ToolbarAndroid
+} from 'react-native';
 
 export default class AddCard extends Component {
 
@@ -30,23 +36,31 @@ export default class AddCard extends Component {
   render() {
     return(
       <View>
-        <TextInput
-          style={styles.input}
-          placeholder='Question'
-          value={this.state.front}
-          onChangeText={this.handleFrontChange}
-        />
-        <TextInput
-          style={styles.input}
-          placeholder='Answer'
-          value={this.state.back}
-          onChangeText={this.handleBackChange}
-        />
-        <Button
-          title='Add card'
-          onPress={this.handleSubmit}
-          disabled={!this.state.isValid}
-        />
+        <View>
+          <ToolbarAndroid style={styles.toolbar}
+            title="Flashy"
+            titleColor="white"/>
+        </View>
+        <View>
+          <TextInput
+            style={styles.input}
+            placeholder='Question'
+            value={this.state.front}
+            onChangeText={this.handleFrontChange}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder='Answer'
+            value={this.state.back}
+            onChangeText={this.handleBackChange}
+          />
+          <Button
+            title='Add card'
+            onPress={this.handleSubmit}
+            disabled={!this.state.isValid}
+          />
+        </View>
+
       </View>
     )
 
@@ -59,5 +73,12 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 5,
     margin: 20
+  },
+  toolbar: {
+    backgroundColor: '#00bbff',
+    height: 56,
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    zIndex: 20
   }
 })
