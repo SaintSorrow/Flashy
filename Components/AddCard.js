@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import { 
   StyleSheet, 
   View, 
-  Button, 
   TextInput,
-  ToolbarAndroid
+  ToolbarAndroid,
+  TouchableOpacity,
+  Text
 } from 'react-native';
 
 export default class AddCard extends Component {
@@ -54,11 +55,15 @@ export default class AddCard extends Component {
             value={this.state.back}
             onChangeText={this.handleBackChange}
           />
-          <Button
-            title='Add card'
-            onPress={this.handleSubmit}
-            disabled={!this.state.isValid}
-          />
+          <View style={{justifyContent: 'center', alignItems: 'center'}}>
+            <TouchableOpacity 
+              disabled={!this.state.isValid}
+              onPress={this.handleSubmit}>
+              <Text style={styles.button}>
+                ADD CARD
+              </Text>
+            </TouchableOpacity>
+          </View>
         </View>
 
       </View>
@@ -69,10 +74,12 @@ export default class AddCard extends Component {
 
 const styles = StyleSheet.create({
   input: {
-    borderColor: 'black',
+    borderColor: 'white',
     borderWidth: 1,
     padding: 5,
-    margin: 20
+    margin: 20,
+    borderRadius: 10,
+    color: 'white'
   },
   toolbar: {
     backgroundColor: '#00bbff',
@@ -80,5 +87,16 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     textAlign: 'center',
     zIndex: 20
+  },
+  button: {
+    borderWidth: 1,
+    borderColor: 'white',
+    padding: 15,
+    textAlign: 'center',
+    color: 'white',
+    backgroundColor: '#00bbff',
+    width: 250,
+    justifyContent: 'center',
+    borderRadius: 10
   }
 })

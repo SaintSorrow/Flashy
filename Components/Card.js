@@ -149,7 +149,7 @@ export default class Card extends Component {
   }
 
   addCard = newCard => {
-    this.setState(prev => ({currentCards: [newCard, ...prev.currentCards]}))
+    this.setState(prev => ({currentCards: [newCard, ...prev.currentCards], showCards: true}))
   }
 
   toggleCards = () => {

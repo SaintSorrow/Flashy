@@ -5,11 +5,20 @@ import {
   View, 
   TouchableOpacity, 
   ScrollView,
-  Dimensions
+  Dimensions,
+  CheckBox
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient';
 
 export default class Deck extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      showCheckBox: false,
+      checked: false
+    }
+  }
+
   render () {
     return(
       <TouchableOpacity onPress={() => this.props.showCards(this.props.deck)}>
@@ -18,7 +27,14 @@ export default class Deck extends Component {
           start={{x: 0, y: 0}}
           end={{x: 1, y: 1}}
           style={styles.deck}>
-          <Text style={styles.deckText}>{this.props.deck.name}</Text>
+          <Text style={styles.deckText}>
+            {this.props.deck.name}
+          </Text>
+          <CheckBox 
+            style={styles.checkBox}
+            onChange={() => this.setState({checked: !this.state.checked})}
+            value={this.state.checked}
+            />
         </LinearGradient>
       </TouchableOpacity>
     );
@@ -41,5 +57,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     fontSize: 24
+  },
+  checkBox: {
+    position: 'absolute',
+    top: 10,
+    left: 10
   }
 });
