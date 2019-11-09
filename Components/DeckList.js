@@ -18,6 +18,8 @@ export default class DeckList extends Component {
             key={deck.name} 
             showCards={() => this.props.showCardsHandler(deck)}
             colors={randomCombination()}
+            showCheckBox={this.props.showCheckBox}
+            checkBoxPress={this.props.deleteCheckBoxOnPress}
             />))}
         </ScrollView>
       </View>

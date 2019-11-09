@@ -3,8 +3,7 @@ import {
   StyleSheet, 
   Text, 
   View, 
-  TouchableOpacity, 
-  ScrollView,
+  TouchableOpacity,
   Dimensions,
   CheckBox
 } from 'react-native'
@@ -14,9 +13,18 @@ export default class Deck extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      showCheckBox: false,
       checked: false
     }
+  }
+
+  checkBoxPressed = () => {
+    this.setState({
+      checked: !this.state.checked
+    })
+
+    this.props.checkBoxPress(this.props.deck);
+
+    console.log('checkbox presed')
   }
 
   render () {
@@ -30,11 +38,13 @@ export default class Deck extends Component {
           <Text style={styles.deckText}>
             {this.props.deck.name}
           </Text>
-          <CheckBox 
+          {this.props.showCheckBox === true && (
+            <CheckBox 
             style={styles.checkBox}
-            onChange={() => this.setState({checked: !this.state.checked})}
+            onChange={this.checkBoxPressed}
             value={this.state.checked}
             />
+          )}
         </LinearGradient>
       </TouchableOpacity>
     );

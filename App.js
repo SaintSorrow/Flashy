@@ -34,7 +34,9 @@ export default class App extends Component {
       decks: decks,
       currentDeck: '',
       currentDeckIdx: -1,
-      showDecks: true
+      showDecks: true,
+      showDeleteCheckBox: false,
+      decksToDelete: []
     }
   }
 
@@ -63,6 +65,11 @@ export default class App extends Component {
       this.setState({
         showCards: !this.state.showCards,
       })
+    } else if (this.state.showDeleteCheckBox) {
+      this.setState({
+        showDeleteCheckBox: !this.state.showDeleteCheckBox,
+        decksToDelete: []
+      })
     }
 
     if (this.state.showDecks === false) {
@@ -86,7 +93,45 @@ export default class App extends Component {
   onActionSelected = position => {
     if (position === 0) {
       this.toggleDecks();
+    } else if (position === 1) {
+      this.deleteOnPress();
     }
+  }
+
+  deleteOnPress() {
+    if (this.state.showDeleteCheckBox === true) {
+      const currentDecks = this.state.decks;
+      const decksToDelete = this.state.decksToDelete;
+      const filteredDecks = currentDecks.filter((x) => {
+        return decksToDelete.indexOf(x) < 0;
+      });
+
+      this.setState({
+        showDeleteCheckBox: !this.state.showDeleteCheckBox,
+        decks: filteredDecks,
+        decksToDelete: []
+      });
+    } else {
+      this.setState({
+        showDeleteCheckBox: !this.state.showDeleteCheckBox
+      });
+    }
+  }
+
+  deleteCheckBox = deck => {
+    let decksToDelete = this.state.decksToDelete;
+    const idx = decksToDelete.indexOf(deck);
+
+    if (idx === -1) {
+      decksToDelete.push(deck);
+    } else {
+      decksToDelete.splice(idx, 1);
+    }
+    
+
+    this.setState({
+      decksToDelete: decksToDelete
+    })
   }
 
   render() {
@@ -102,7 +147,12 @@ export default class App extends Component {
                 actions={toolBarActions}>
               </ToolbarAndroid>
             </View>
-            <DeckList showCardsHandler={this.showCardsHandler} decks={this.state.decks}/>
+            <DeckList 
+              showCardsHandler={this.showCardsHandler} 
+              decks={this.state.decks}
+              showCheckBox={this.state.showDeleteCheckBox}
+              deleteCheckBoxOnPress={this.deleteCheckBox}
+              />
           </View>
         )}
         {this.state.showCards === false && this.state.showDecks === false && (
