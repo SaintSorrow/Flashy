@@ -1,11 +1,8 @@
 import React, { Component } from 'react'
 import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  TouchableOpacity, 
-  ScrollView, 
-  FlatList
+  StyleSheet,  
+  View,  
+  ScrollView
 } from 'react-native'
 import Deck from './Deck'
 

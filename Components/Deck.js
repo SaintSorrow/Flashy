@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
 import { 
   StyleSheet, 
-  Text, 
-  View, 
+  Text,
   TouchableOpacity,
   Dimensions,
   CheckBox

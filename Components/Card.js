@@ -4,13 +4,10 @@ import {
   Text, 
   View, 
   TouchableOpacity, 
-  Button, 
   Animated,
   ToolbarAndroid
 } from 'react-native'
 import AddCard from './AddCard'
-import ActionButton from 'react-native-action-button';
-import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class Card extends Component {
   constructor(props) {
@@ -113,42 +110,32 @@ export default class Card extends Component {
   }
 
   correctCard() {
-    if (this.state.showCardBack === true) {
-      this.flipCard();
-    }
-
-    let card = this.state.currentCards[0];
-    card.time = (new Date() - this.state.startTime) / 1000;
-    let newCorrectCards = [...this.state.correctCards, card];
-    newCorrectCards.sort((a, b) => (a.time > b.time) ? 1 : -1);
-
-    let newCurrentCards = [...this.state.currentCards];
-    newCurrentCards.splice(0, 1);
-
-    this.setState({
-      correctCards: newCorrectCards,
-      currentCards: newCurrentCards,
-      startTime: new Date()
-    })
+    correctCards = this.state.correctCards;
+    this.handleAnswer(correctCards);
   }
 
   incorrectCard() {
+    incorrectCards = this.state.incorrectCards;
+    this.handleAnswer(incorrectCards);
+  }
+
+  handleAnswer(currentDeck) {
     if (this.state.showCardBack === true) {
       this.flipCard();
     }
 
-    let card = this.state.currentCards[0];
-    card.time = (new Date() - this.state.startTime) / 1000;
-    let newIncorrectCards = [...this.state.incorrectCards, card];
-    newIncorrectCards.sort((a, b) => (a.time < b.time) ? 1 : -1);
+    let currentCard = this.state.currentCards[0];
+    currentCard.time = (new Date() - this.state.startTime) / 1000;
 
-    let newCurrentCards = [...this.state.currentCards];
+    currentDeck.push(currentCard);
+    currentDeck.sort((a, b) => (a.time < b.time) ? 1 : -1);
+
+    let newCurrentCards = this.state.currentCards;
     newCurrentCards.splice(0, 1);
 
     this.setState({
-      incorrectCards: newIncorrectCards,
-      currentCards: newCurrentCards,
-      startTime: new Date()
+      currentDeck: currentDeck,
+      currentCards: newCurrentCards
     })
   }
 

@@ -2,11 +2,9 @@ import React, { Component } from 'react';
 import { 
   StyleSheet, 
   View, 
-  Button, 
   Text, 
   TextInput,
   ToolbarAndroid,
-  StatusBar,
   TouchableOpacity
 } from 'react-native';
 
