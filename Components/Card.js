@@ -98,7 +98,7 @@ export default class Card extends Component {
   getCardText() {
     let cardText = ""
 
-    if (this.props.cards.length === 0) {
+    if (this.state.currentCards.length === 0) {
       cardText = "No cards left in the deck!";
     } else if (this.state.showCardBack === true) {
       cardText = this.state.currentCards[0].back;
@@ -120,6 +120,10 @@ export default class Card extends Component {
   }
 
   handleAnswer(currentDeck) {
+    if (this.state.currentCards.length === 0) {
+      return;
+    }
+
     if (this.state.showCardBack === true) {
       this.flipCard();
     }
