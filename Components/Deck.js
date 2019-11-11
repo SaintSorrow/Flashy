@@ -23,8 +23,6 @@ export default class Deck extends Component {
     })
 
     this.props.checkBoxPress(this.props.deck);
-
-    console.log('checkbox presed')
   }
 
   render () {

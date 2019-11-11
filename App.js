@@ -119,6 +119,10 @@ export default class App extends Component {
   }
 
   deleteCheckBox = deck => {
+    if (this.state.decksToDelete.length === this.state.decks.length - 1) {
+      return;
+    }
+
     let decksToDelete = this.state.decksToDelete;
     const idx = decksToDelete.indexOf(deck);
 

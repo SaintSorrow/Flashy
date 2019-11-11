@@ -20,12 +20,37 @@ export default class Card extends Component {
       incorrectCards: [],
       correctCards: [],
       currentCards: props.cards,
-      showCards: true
+      showCards: true,
+      startTime: 0,
+      endTime: 0
     }
   }
   
 
+  componentDidMount() {
+    this.setState({
+      startTime: new Date()
+    });
+  }
+
   componentWillMount() {
+    this.manageFlipAnimation();
+    this.populateTimeOnCards();
+  }
+
+  populateTimeOnCards() {
+    cards = [];
+    this.state.currentCards.map(card => {
+      let newCard = { front: card.front, back: card.back, time: 0};
+      cards.push(newCard);
+    });
+
+    this.setState({
+      currentCards: cards
+    });
+  }
+
+  manageFlipAnimation() {
     this.animatedValue = new Animated.Value(0);
     this.value = 0;
     this.animatedValue.addListener(({ value }) => {
@@ -92,14 +117,18 @@ export default class Card extends Component {
       this.flipCard();
     }
 
-    const card = this.state.currentCards[0];
-    const newCorrectCards = [...this.state.correctCards, card];
+    let card = this.state.currentCards[0];
+    card.time = (new Date() - this.state.startTime) / 1000;
+    let newCorrectCards = [...this.state.correctCards, card];
+    newCorrectCards.sort((a, b) => (a.time > b.time) ? 1 : -1);
+
     let newCurrentCards = [...this.state.currentCards];
     newCurrentCards.splice(0, 1);
 
     this.setState({
       correctCards: newCorrectCards,
-      currentCards: newCurrentCards
+      currentCards: newCurrentCards,
+      startTime: new Date()
     })
   }
 
@@ -108,14 +137,18 @@ export default class Card extends Component {
       this.flipCard();
     }
 
-    const card = this.state.currentCards[0];
-    const newIncorrectCards = [...this.state.incorrectCards, card];
+    let card = this.state.currentCards[0];
+    card.time = (new Date() - this.state.startTime) / 1000;
+    let newIncorrectCards = [...this.state.incorrectCards, card];
+    newIncorrectCards.sort((a, b) => (a.time < b.time) ? 1 : -1);
+
     let newCurrentCards = [...this.state.currentCards];
     newCurrentCards.splice(0, 1);
 
     this.setState({
       incorrectCards: newIncorrectCards,
-      currentCards: newCurrentCards
+      currentCards: newCurrentCards,
+      startTime: new Date()
     })
   }
 
